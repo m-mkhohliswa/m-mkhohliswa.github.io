@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musa L. Mkhohliswa — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --ink-muted: #5a5a5a;
+    --ink-faint: #a0a0a0;
+    --surface: #faf9f6;
+    --surface-card: #ffffff;
+    --accent: #1a3a2a;
+    --accent-soft: #d4ece0;
+    --accent-mid: #3d7a5e;
+    --gold: #c8a84b;
+    --gold-soft: #f5edd8;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --radius: 12px;
+    --radius-sm: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Figtree', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 6rem 3rem 4rem;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-left { padding-top: 2rem; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent-mid);
+    border-radius: 50%;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent-mid);
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .btn-primary:hover { background: #0f2318; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--border-strong);
+  }
+  .btn-outline:hover { background: var(--surface-card); border-color: var(--accent); transform: translateY(-1px); }
+
+  /* Hero right: stats grid */
+  .hero-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-self: center;
+  }
+  .stat-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card.green::before { background: var(--accent-mid); }
+  .stat-card.gold::before { background: var(--gold); }
+  .stat-card.blue::before { background: #3b82f6; }
+  .stat-card.coral::before { background: #e05a3a; }
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .stat-sublabel {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 0.25rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ---- SECTION LAYOUT ---- */
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 3rem;
+  }
+
+  /* ---- SKILLS SECTION ---- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+  .skill-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .skill-card:hover { border-color: var(--accent-mid); transform: translateY(-2px); }
+  .skill-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 1rem;
+  }
+  .skill-icon.si-green { background: var(--accent-soft); }
+  .skill-icon.si-gold { background: var(--gold-soft); }
+  .skill-icon.si-blue { background: #dbeafe; }
+  .skill-icon.si-purple { background: #ede9fe; }
+  .skill-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 0.35rem;
+    color: var(--ink);
+  }
+  .skill-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 1rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--ink-muted);
+  }
+
+  /* ---- PROJECT SECTION ---- */
+  .project-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .project-card:hover {
+    border-color: var(--accent-mid);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+  .project-banner {
+    height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    font-family: 'DM Mono', monospace;
+  }
+  .project-banner.banner-dark {
+    background: var(--accent);
+  }
+  .project-banner.banner-gold {
+    background: #1c1a14;
+  }
+  .banner-grid {
+    position: absolute; inset: 0;
+    opacity: 0.15;
+    background-image:
+      linear-gradient(var(--accent-mid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--accent-mid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .banner-label {
+    position: relative;
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    z-index: 2;
+  }
+  .banner-label .big-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    color: rgba(255,255,255,0.95);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .banner-label .small-text {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+  }
+  .banner-chart {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100px;
+    display: flex; align-items: flex-end; justify-content: center;
+    gap: 6px;
+    padding: 0 2rem;
+    opacity: 0.5;
+  }
+  .bar {
+    flex: 1; max-width: 30px;
+    border-radius: 4px 4px 0 0;
+    background: rgba(255,255,255,0.4);
+  }
+  .project-body {
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+  }
+  .project-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .project-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .pt-green { background: var(--accent-soft); color: var(--accent); }
+  .pt-gold  { background: var(--gold-soft); color: #6b4f0a; }
+  .pt-blue  { background: #dbeafe; color: #1d4ed8; }
+  .pt-gray  { background: #f3f4f6; color: #374151; }
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+  .project-highlights {
+    margin-top: 1.25rem;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .highlight-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+  .highlight-item::before {
+    content: '→';
+    color: var(--accent-mid);
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .project-actions {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-sm-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-sm-primary:hover { background: #0f2318; }
+  .btn-sm-outline {
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1.5px solid var(--border-strong);
+  }
+  .btn-sm-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- INLINE CHART (SVG bars for dividend yields) ---- */
+  .chart-container {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .bar-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    width: 140px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'DM Mono', monospace;
+  }
+  .bar-track {
+    flex: 1; height: 20px;
+    background: var(--surface);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--accent-mid);
+    transition: width 1s ease;
+    display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
+  }
+  .bar-fill.gold-fill { background: var(--gold); }
+  .bar-val {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink-faint);
+    width: 36px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* ---- METHODOLOGY ---- */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .method-step {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    position: relative;
+  }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-mid);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .step-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .step-detail {
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .step-tool {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* ---- ABOUT / EDUCATION ---- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--ink-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-size: 15px;
+  }
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item {
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .timeline-item:last-child { border-bottom: 1px solid var(--border); }
+  .tl-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+  .tl-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .tl-org {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+  .tl-status {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--gold-soft);
+    color: #6b4f0a;
+    margin-top: 0.4rem;
+  }
+
+  /* ---- CONTACT ---- */
+  .contact-band {
+    background: var(--accent);
+    color: #fff;
+    padding: 6rem 3rem;
+    text-align: center;
+  }
+  .contact-band h2 {
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 0.75rem;
+  }
+  .contact-sub {
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2.5rem;
+    font-size: 15px;
+  }
+  .contact-links {
+    display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;
+  }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .cl-white {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.2);
+  }
+  .cl-white:hover { background: rgba(255,255,255,0.2); }
+  .cl-solid {
+    background: #fff;
+    color: var(--accent);
+  }
+  .cl-solid:hover { background: rgba(255,255,255,0.9); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    background: #0a0f0c;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 5rem 1.5rem 3rem;
+      min-height: auto;
+    }
+    .hero-right { grid-template-columns: 1fr 1fr; }
+    section { padding: 4rem 1.5rem; }
+    .project-body { grid-template-columns: 1fr; }
+    .project-actions { flex-direction: row; align-items: center; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-band { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">MLM · PORTFOLIO</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">BSc Mathematics &amp; Statistics · University of Johannesburg</div>
+    <h1>Musa L.<br><em>Mkhohliswa</em></h1>
+    <p class="hero-desc">
+      Quantitative analyst building end-to-end data pipelines across Python, MySQL, R, and Tableau — from raw S&amp;P 500 fundamentals to publication-ready investment dashboards.
+    </p>
+    <div class="hero-ctas">
+      <a href="https://public.tableau.com/views/IncomeOverviewandRiskProfiles/PortfolioInvestmentStory" target="_blank" class="btn btn-primary">View Tableau Dashboard ↗</a>
+      <a href="#project" class="btn btn-outline">Explore Project</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-card green">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">S&amp;P 500 Companies</div>
+      <div class="stat-sublabel">across 11 GICS sectors</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Tech Stack Layers</div>
+      <div class="stat-sublabel">Python · MySQL · R · Tableau</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-number">7+</div>
+      <div class="stat-label">Statistical Tests</div>
+      <div class="stat-sublabel">Kruskal-Wallis, Welch's ANOVA…</div>
+    </div>
+    <div class="stat-card coral">
+      <div class="stat-number">3.78%</div>
+      <div class="stat-label">Top Sector Yield</div>
+      <div class="stat-sublabel">Real Estate avg. dividend</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Technical Stack</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon si-blue">🐍</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">End-to-end ETL pipeline ingesting 500+ company CSV files into MySQL via SQLAlchemy and pandas chunked loading.</div>
+      <div class="skill-tags">
+        <span class="tag">PANDAS</span>
+        <span class="tag">SQLALCHEMY</span>
+        <span class="tag">PYMYSQL</span>
+        <span class="tag">KAGGLE DATA</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon si-purple">🗄️</div>
+      <div class="skill-name">MySQL</div>
+      <div class="skill-desc">Relational schema design with 60+ sector-partitioned tables. Complex WHERE filtering, CREATE TABLE AS SELECT, and multi-table joins.</div>
+      <div class="skill-tags">
+        <span class="tag">SCHEMA DESIGN</span>
+        <span class="tag">DDL / DML</span>
+        <span class="tag">AGGREGATION</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon si-green">📊</div>
+      <div class="skill-name">R (Statistical Analysis)</div>
+      <div class="skill-desc">ANOVA pipeline with normality testing, Levene's test, log-transform, Welch's ANOVA, and Games-Howell post-hoc comparisons.</div>
+      <div class="skill-tags">
+        <span class="tag">GGPLOT2</span>
+        <span class="tag">QUANTMOD</span>
+        <span class="tag">RSTATIX</span>
+        <span class="tag">DPLYR</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon si-gold">📈</div>
+      <div class="skill-name">Tableau Public</div>
+      <div class="skill-desc">Multi-page investment story with bar charts, scatter plots, doughnut charts, and KPI panels fed from R-processed CSV exports.</div>
+      <div class="skill-tags">
+        <span class="tag">KPI PANELS</span>
+        <span class="tag">SCATTER PLOTS</span>
+        <span class="tag">DONUT CHART</span>
+        <span class="tag">STORYTELLING</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJECT -->
+<section id="project">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Featured Project</h2>
+  </div>
+
+  <!-- Main project card -->
+  <div class="project-card">
+    <div class="project-banner banner-dark">
+      <div class="banner-grid"></div>
+      <div class="banner-chart">
+        <div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:60%"></div>
+        <div class="bar" style="height:72%"></div>
+        <div class="bar" style="height:48%"></div>
+        <div class="bar" style="height:80%"></div>
+        <div class="bar" style="height:65%"></div>
+        <div class="bar" style="height:90%"></div>
+        <div class="bar" style="height:42%"></div>
+        <div class="bar" style="height:58%"></div>
+        <div class="bar" style="height:35%"></div>
+        <div class="bar" style="height:70%"></div>
+      </div>
+      <div class="banner-label">
+        <span class="big-text">S&amp;P 500 Income &amp; Risk Analysis</span>
+        <span class="small-text">PORTFOLIO INVESTMENT STORY · TABLEAU PUBLIC</span>
+      </div>
+    </div>
+    <div class="project-body">
+      <div>
+        <div class="project-meta">
+          <span class="project-tag pt-green">R · Statistical Analysis</span>
+          <span class="project-tag pt-blue">MySQL · ETL</span>
+          <span class="project-tag pt-gold">Tableau · Visualization</span>
+          <span class="project-tag pt-gray">Python · Pipeline</span>
+        </div>
+        <h3>Portfolio Investment Story</h3>
+        <p class="project-desc">
+          A full quantitative equity research pipeline covering all 11 S&amp;P 500 GICS sectors. The project extracts, cleans, and statistically analyses over 500 companies across income metrics, risk-adjusted returns, management efficiency, and growth indicators — culminating in an interactive Tableau dashboard for investment decision support.
+        </p>
+        <div class="project-highlights">
+          <div class="highlight-item">Kruskal-Wallis + Dunn post-hoc confirms statistically significant dividend yield differences across sectors (p &lt; 0.05)</div>
+          <div class="highlight-item">Welch's ANOVA on log-transformed yields robust to heteroscedasticity; Games-Howell identifies pairwise winners</div>
+          <div class="highlight-item">Risk profiling classifies sectors as Aggressive / Balanced / Conservative using Sharpe-ratio thresholds</div>
+          <div class="highlight-item">Full MySQL schema with 60+ partitioned tables (Income, Capital, AdjReturns, ManagementEff, FutureReturns)</div>
+        </div>
+
+        <!-- Inline dividend yield bar chart -->
+        <div class="chart-container">
+          <div class="chart-title">Average Dividend Yield by Sector (%)</div>
+          <div class="bar-row">
+            <div class="bar-label">Real Estate</div>
+            <div class="bar-track"><div class="bar-fill gold-fill" style="width:100%"></div></div>
+            <div class="bar-val">3.78%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Consumer Defense</div>
+            <div class="bar-track"><div class="bar-fill gold-fill" style="width:94.7%"></div></div>
+            <div class="bar-val">3.58%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Utilities</div>
+            <div class="bar-track"><div class="bar-fill gold-fill" style="width:80.8%"></div></div>
+            <div class="bar-val">3.05%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Energy</div>
+            <div class="bar-track"><div class="bar-fill" style="width:64.2%"></div></div>
+            <div class="bar-val">2.42%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Financial Serv.</div>
+            <div class="bar-track"><div class="bar-fill" style="width:63.2%"></div></div>
+            <div class="bar-val">2.38%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Consumer Cycle</div>
+            <div class="bar-track"><div class="bar-fill" style="width:60.8%"></div></div>
+            <div class="bar-val">2.30%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Communication</div>
+            <div class="bar-track"><div class="bar-fill" style="width:55.7%"></div></div>
+            <div class="bar-val">2.10%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Technology</div>
+            <div class="bar-track"><div class="bar-fill" style="width:46.5%"></div></div>
+            <div class="bar-val">1.75%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Healthcare</div>
+            <div class="bar-track"><div class="bar-fill" style="width:45.8%"></div></div>
+            <div class="bar-val">1.73%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Basic Materials</div>
+            <div class="bar-track"><div class="bar-fill" style="width:43.3%"></div></div>
+            <div class="bar-val">1.63%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Industrials</div>
+            <div class="bar-track"><div class="bar-fill" style="width:39.2%"></div></div>
+            <div class="bar-val">1.48%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-actions">
+        <a href="https://public.tableau.com/views/IncomeOverviewandRiskProfiles/PortfolioInvestmentStory" target="_blank" class="btn-sm btn-sm-primary">Live Dashboard ↗</a>
+        <a href="#methodology" class="btn-sm btn-sm-outline">Methodology</a>
+        <a href="income_tracking.R" class="btn-sm btn-sm-outline">income_tracking.R</a>
+        <a href="risk_profiling.R" class="btn-sm btn-sm-outline">risk_profiling.R</a>
+        <a href="company_info.sql" class="btn-sm btn-sm-outline">company_info.sql</a>
+        <a href="company_info.py" class="btn-sm btn-sm-outline">company_info.py</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Analytical Pipeline</h2>
+  </div>
+  <p style="color: var(--ink-muted); max-width: 600px; margin-bottom: 0.5rem; font-size: 15px;">
+    Seven-stage treatment effects model applied to compare dividend yield distributions across all 11 S&amp;P 500 GICS sectors.
+  </p>
+  <div class="method-grid">
+    <div class="method-step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-name">Data Ingestion</div>
+      <div class="step-detail">500+ S&amp;P 500 company CSVs loaded into MySQL in chunked batches via SQLAlchemy.</div>
+      <span class="step-tool">Python · pandas</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-name">Schema Design</div>
+      <div class="step-detail">60+ sector-partitioned tables for Income, Capital, Risk, Management, and Growth metrics.</div>
+      <span class="step-tool">MySQL · DDL</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-name">Normality Testing</div>
+      <div class="step-detail">Kruskal-Wallis non-parametric test on raw yields. Q-Q plot and histogram diagnostics confirm non-normality.</div>
+      <span class="step-tool">R · FSA</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 04</div>
+      <div class="step-name">Variance Homogeneity</div>
+      <div class="step-detail">Levene's Test confirms heteroscedasticity (p &lt; 0.05), mandating log1p transformation.</div>
+      <span class="step-tool">R · car</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 05</div>
+      <div class="step-name">Log Transform</div>
+      <div class="step-detail">log1p applied to yields. Re-tested for variance homogeneity and improved normality profile.</div>
+      <span class="step-tool">R · base</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 06</div>
+      <div class="step-name">Welch's ANOVA</div>
+      <div class="step-detail">Robust to unequal variances. Confirms at least one sector mean significantly differs (p &lt; 0.05).</div>
+      <span class="step-tool">R · oneway.test</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 07</div>
+      <div class="step-name">Games-Howell Post-Hoc</div>
+      <div class="step-detail">Pairwise comparisons valid under unequal variances and sample sizes. Identifies sector winners.</div>
+      <span class="step-tool">R · rstatix</span>
+    </div>
+    <div class="method-step">
+      <div class="step-num">STEP 08</div>
+      <div class="step-name">Risk Profiling</div>
+      <div class="step-detail">Sharpe ratio thresholds classify sectors: Aggressive (&gt;0.35), Balanced (0.25–0.35), Conservative (&lt;0.25).</div>
+      <span class="step-tool">R · PerformanceAnalytics</span>
+    </div>
+  </div>
+
+  <!-- Risk profile summary -->
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem;">
+    <div style="background: #d4ece0; border-radius: var(--radius); padding: 1.25rem;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: var(--accent); margin-bottom:0.5rem;">AGGRESSIVE (36.4%)</div>
+      <div style="font-size: 13px; color: var(--accent); line-height:1.6;">Utilities · Industrials · Technology · Healthcare</div>
+    </div>
+    <div style="background: var(--gold-soft); border-radius: var(--radius); padding: 1.25rem;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: #6b4f0a; margin-bottom:0.5rem;">BALANCED (36.4%)</div>
+      <div style="font-size: 13px; color: #6b4f0a; line-height:1.6;">Comm. Services · Consumer Defense · Financial Serv. · Real Estate</div>
+    </div>
+    <div style="background: #f3f4f6; border-radius: var(--radius); padding: 1.25rem;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: #374151; margin-bottom:0.5rem;">CONSERVATIVE (27.3%)</div>
+      <div style="font-size: 13px; color: #374151; line-height:1.6;">Consumer Cycle · Basic Materials · Energy</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>About &amp; Background</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        I'm a Mathematics and Statistics graduate from the University of Johannesburg with a focus on quantitative analysis, statistical modelling, and financial data. My work sits at the intersection of rigorous academic methodology and practical data engineering.
+      </p>
+      <p>
+        The S&amp;P 500 portfolio project represents my approach to end-to-end analytics: starting from raw data ingestion, through relational database design, non-parametric hypothesis testing, and finally interactive business intelligence dashboards.
+      </p>
+      <p>
+        Beyond technical skills, I've applied data thinking in community settings — managing sustainability project data as Projects Manager at Eco-Hub, and providing academic guidance as a Residence Academic Advisor at UJ.
+      </p>
+      <p style="margin-bottom:0;">
+        I'm actively seeking an entry-level data analyst role where I can contribute to data pipelines, statistical modelling, and decision-making infrastructure.
+      </p>
+    </div>
+    <div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-date">2020 – 2024</div>
+          <div class="tl-title">BSc Mathematical Sciences</div>
+          <div class="tl-org">University of Johannesburg · Mathematics &amp; Statistics</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">FEB – OCT 2024</div>
+          <div class="tl-title">Residence Academic Advisor</div>
+          <div class="tl-org">Oppierif Men's Residence, UJ</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">FEB – OCT 2025</div>
+          <div class="tl-title">Projects Manager</div>
+          <div class="tl-org">Eco-Hub, University of Johannesburg</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">IN PROGRESS</div>
+          <div class="tl-title">Power BI Data Analyst Associate</div>
+          <div class="tl-org">Microsoft Learn</div>
+          <span class="tl-status">In Progress</span>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-date">IN PROGRESS</div>
+          <div class="tl-title">Advanced SQL &amp; Python</div>
+          <div class="tl-org">Kaggle Learn</div>
+          <span class="tl-status">In Progress</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <h2>Let's Connect</h2>
+  <p class="contact-sub">Open to data analyst roles and collaborations in quantitative finance &amp; analytics.</p>
+  <div class="contact-links">
+    <a href="mailto:musamkhohliswa@outlook.com" class="contact-link cl-solid">✉ musamkhohliswa@outlook.com</a>
+    <a href="https://public.tableau.com/views/IncomeOverviewandRiskProfiles/PortfolioInvestmentStory" target="_blank" class="contact-link cl-white">Tableau Dashboard ↗</a>
+    <a href="https://github.com/YOUR-USERNAME" target="_blank" class="contact-link cl-white">GitHub ↗</a>
+    <a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank" class="contact-link cl-white">LinkedIn ↗</a>
+  </div>
+</div>
+
+<footer>
+  © 2025 · MUSA L. MKHOHLISWA · DATA ANALYST · EAST LONDON, ZA
+</footer>
+
+</body>
+</html>
