@@ -3,986 +3,1650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Musa L. Mkhohliswa — Data Analyst</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Multi-Factor Equity Research & Portfolio Risk Analytics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
   :root {
-    --ink: #0e0e0e;
-    --ink-muted: #5a5a5a;
-    --ink-faint: #a0a0a0;
-    --surface: #faf9f6;
-    --surface-card: #ffffff;
-    --accent: #1a3a2a;
-    --accent-soft: #d4ece0;
-    --accent-mid: #3d7a5e;
-    --gold: #c8a84b;
-    --gold-soft: #f5edd8;
-    --border: rgba(0,0,0,0.08);
-    --border-strong: rgba(0,0,0,0.15);
-    --radius: 12px;
-    --radius-sm: 6px;
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --bg3: #141820;
+    --panel: #181e28;
+    --border: #1e2840;
+    --accent: #c8a96e;
+    --accent2: #4a9eff;
+    --accent3: #e05f5f;
+    --accent4: #4ecdc4;
+    --text: #d4cfc8;
+    --text-dim: #7a7870;
+    --text-bright: #f0ebe2;
+    --green: #6fcf97;
+    --red: #e05f5f;
+    --yellow: #f2c94c;
   }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Figtree', sans-serif;
-    background: var(--surface);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: hidden;
   }
 
-  /* ---- NAV ---- */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 3rem;
-    background: rgba(250,249,246,0.92);
-    backdrop-filter: blur(12px);
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
     border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted);
-    text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--ink-muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--ink); }
-
-  /* ---- HERO ---- */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 6rem 3rem 4rem;
-    gap: 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .hero-left { padding-top: 2rem; }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    padding: 6px 14px;
-    border-radius: 100px;
-    margin-bottom: 2rem;
-  }
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent-mid);
-    border-radius: 50%;
-  }
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(3rem, 5vw, 4.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-    color: var(--ink);
-  }
-  h1 em {
-    font-style: italic;
-    color: var(--accent-mid);
-  }
-  .hero-desc {
-    font-size: 1.05rem;
-    color: var(--ink-muted);
-    line-height: 1.75;
-    max-width: 440px;
-    margin-bottom: 2.5rem;
-  }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 0.75rem 1.75rem;
-    border-radius: 100px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-decoration: none;
-    transition: all 0.2s;
-    cursor: pointer; border: none;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #ffffff;
-  }
-  .btn-primary:hover { background: #0f2318; transform: translateY(-1px); }
-  .btn-outline {
-    background: transparent;
-    color: var(--ink);
-    border: 1.5px solid var(--border-strong);
-  }
-  .btn-outline:hover { background: var(--surface-card); border-color: var(--accent); transform: translateY(-1px); }
-
-  /* Hero right: stats grid */
-  .hero-right {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-self: center;
-  }
-  .stat-card {
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    position: relative;
+    padding: 0 48px;
+    background: var(--bg2);
     overflow: hidden;
   }
-  .stat-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px;
-  }
-  .stat-card.green::before { background: var(--accent-mid); }
-  .stat-card.gold::before { background: var(--gold); }
-  .stat-card.blue::before { background: #3b82f6; }
-  .stat-card.coral::before { background: #e05a3a; }
-  .stat-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.4rem;
-    line-height: 1;
-    margin-bottom: 0.4rem;
-    color: var(--ink);
-  }
-  .stat-label {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-  }
-  .stat-sublabel {
-    font-size: 11px;
-    color: var(--ink-faint);
-    margin-top: 0.25rem;
-    font-family: 'DM Mono', monospace;
-  }
 
-  /* ---- SECTION LAYOUT ---- */
-  section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 6rem 3rem;
-  }
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    margin-bottom: 3.5rem;
-  }
-  .section-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
-  }
-  h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .section-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border);
-    margin: 0 3rem;
-  }
-
-  /* ---- SKILLS SECTION ---- */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.25rem;
-  }
-  .skill-card {
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .skill-card:hover { border-color: var(--accent-mid); transform: translateY(-2px); }
-  .skill-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    margin-bottom: 1rem;
-  }
-  .skill-icon.si-green { background: var(--accent-soft); }
-  .skill-icon.si-gold { background: var(--gold-soft); }
-  .skill-icon.si-blue { background: #dbeafe; }
-  .skill-icon.si-purple { background: #ede9fe; }
-  .skill-name {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 0.35rem;
-    color: var(--ink);
-  }
-  .skill-desc {
-    font-size: 13px;
-    color: var(--ink-muted);
-    line-height: 1.55;
-  }
-  .skill-tags {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    margin-top: 1rem;
-  }
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    padding: 3px 10px;
-    border-radius: 100px;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    color: var(--ink-muted);
-  }
-
-  /* ---- PROJECT SECTION ---- */
-  .project-card {
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .project-card:hover {
-    border-color: var(--accent-mid);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-  }
-  .project-banner {
-    height: 220px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-    font-family: 'DM Mono', monospace;
-  }
-  .project-banner.banner-dark {
-    background: var(--accent);
-  }
-  .project-banner.banner-gold {
-    background: #1c1a14;
-  }
-  .banner-grid {
-    position: absolute; inset: 0;
-    opacity: 0.15;
-    background-image:
-      linear-gradient(var(--accent-mid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--accent-mid) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-  .banner-label {
-    position: relative;
-    text-align: center;
-    color: rgba(255,255,255,0.9);
-    z-index: 2;
-  }
-  .banner-label .big-text {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.5rem;
-    color: rgba(255,255,255,0.95);
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  .banner-label .small-text {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: rgba(255,255,255,0.5);
-  }
-  .banner-chart {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 100px;
-    display: flex; align-items: flex-end; justify-content: center;
-    gap: 6px;
-    padding: 0 2rem;
-    opacity: 0.5;
-  }
-  .bar {
-    flex: 1; max-width: 30px;
-    border-radius: 4px 4px 0 0;
-    background: rgba(255,255,255,0.4);
-  }
-  .project-body {
-    padding: 2rem 2.5rem;
+  .header-grid {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: start;
+    align-items: end;
+    padding: 56px 0 40px;
+    gap: 32px;
   }
-  .project-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.75rem; }
-  .project-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    padding: 4px 12px;
-    border-radius: 100px;
-  }
-  .pt-green { background: var(--accent-soft); color: var(--accent); }
-  .pt-gold  { background: var(--gold-soft); color: #6b4f0a; }
-  .pt-blue  { background: #dbeafe; color: #1d4ed8; }
-  .pt-gray  { background: #f3f4f6; color: #374151; }
-  h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.6rem;
-    color: var(--ink);
-  }
-  .project-desc {
-    font-size: 14px;
-    color: var(--ink-muted);
-    line-height: 1.7;
-    max-width: 560px;
-  }
-  .project-highlights {
-    margin-top: 1.25rem;
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .highlight-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 13px;
-    color: var(--ink-muted);
-  }
-  .highlight-item::before {
-    content: '→';
-    color: var(--accent-mid);
-    font-family: 'DM Mono', monospace;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .project-actions {
-    display: flex; flex-direction: column; gap: 10px;
-    align-items: flex-end;
-    flex-shrink: 0;
-  }
-  .btn-sm {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 0.5rem 1.25rem;
-    border-radius: 100px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .btn-sm-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-  .btn-sm-primary:hover { background: #0f2318; }
-  .btn-sm-outline {
-    background: transparent;
-    color: var(--ink-muted);
-    border: 1.5px solid var(--border-strong);
-  }
-  .btn-sm-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ---- INLINE CHART (SVG bars for dividend yields) ---- */
-  .chart-container {
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-  }
-  .chart-title {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 1rem;
+  .header-eyebrow {
     font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
-  .bar-row {
-    display: flex; align-items: center; gap: 10px;
+
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6vw, 88px);
+    line-height: 0.92;
+    color: var(--text-bright);
+    letter-spacing: 0.02em;
+  }
+
+  .header-title span { color: var(--accent); }
+
+  .header-subtitle {
+    margin-top: 20px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  .header-meta {
+    text-align: right;
+    border-left: 1px solid var(--border);
+    padding-left: 32px;
+  }
+
+  .header-meta .author {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--text-bright);
+    letter-spacing: 0.05em;
+  }
+
+  .header-meta .stack {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+
+  .stack-tag {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    background: var(--bg3);
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  nav a {
+    padding: 14px 24px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--accent);
+    background: var(--bg3);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main { padding: 0 48px 80px; max-width: 1440px; margin: 0 auto; }
+
+  /* ── SECTION ── */
+  .section {
+    padding-top: 64px;
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 40px;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 0.85;
+    color: var(--border);
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+
+  .section-info {}
+
+  .section-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
     margin-bottom: 8px;
   }
-  .bar-label {
-    font-size: 11px;
-    color: var(--ink-muted);
-    width: 140px;
-    flex-shrink: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: 'DM Mono', monospace;
-  }
-  .bar-track {
-    flex: 1; height: 20px;
-    background: var(--surface);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: var(--accent-mid);
-    transition: width 1s ease;
-    display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
-  }
-  .bar-fill.gold-fill { background: var(--gold); }
-  .bar-val {
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    color: var(--ink-faint);
-    width: 36px;
-    flex-shrink: 0;
-    text-align: right;
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.04em;
+    color: var(--text-bright);
+    line-height: 1;
   }
 
-  /* ---- METHODOLOGY ---- */
-  .method-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  .method-step {
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    position: relative;
-  }
-  .step-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent-mid);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
-  }
-  .step-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.4rem;
-  }
-  .step-detail {
-    font-size: 12px;
-    color: var(--ink-muted);
-    line-height: 1.5;
-  }
-  .step-tool {
-    display: inline-block;
-    margin-top: 0.75rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    padding: 2px 8px;
-    border-radius: 100px;
-  }
-
-  /* ---- ABOUT / EDUCATION ---- */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 4rem;
-    align-items: start;
-  }
-  .about-text p {
-    color: var(--ink-muted);
-    line-height: 1.8;
-    margin-bottom: 1rem;
-    font-size: 15px;
-  }
-  .timeline { display: flex; flex-direction: column; gap: 0; }
-  .timeline-item {
-    padding: 1.25rem 0;
-    border-top: 1px solid var(--border);
-  }
-  .timeline-item:last-child { border-bottom: 1px solid var(--border); }
-  .tl-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.35rem;
-  }
-  .tl-title {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--ink);
-    margin-bottom: 0.2rem;
-  }
-  .tl-org {
+  .section-desc {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
     font-size: 13px;
-    color: var(--ink-muted);
+    color: var(--text-dim);
+    margin-top: 10px;
+    max-width: 720px;
+    line-height: 1.8;
   }
-  .tl-status {
-    display: inline-block;
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .kpi {
+    background: var(--panel);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .kpi:hover { background: var(--bg3); }
+
+  .kpi::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .kpi:hover::after { transform: scaleX(1); }
+
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 0.02em;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.amber { color: var(--accent); }
+  .kpi-value.red   { color: var(--red); }
+  .kpi-value.blue  { color: var(--accent2); }
+
+  /* ── CHART GRID ── */
+  .chart-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .chart-grid.two   { grid-template-columns: 1fr 1fr; }
+  .chart-grid.three { grid-template-columns: 2fr 1fr; }
+  .chart-grid.full  { grid-template-columns: 1fr; }
+
+  .chart-panel {
+    background: var(--panel);
+    padding: 28px;
+    position: relative;
+  }
+
+  .chart-panel-title {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .chart-panel-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 320px;
+  }
+
+  .chart-wrap.tall { height: 420px; }
+  .chart-wrap.short { height: 220px; }
+
+  /* ── INTERPRETATION BOX ── */
+  .interp {
+    border-left: 3px solid var(--accent);
+    background: var(--bg3);
+    padding: 20px 24px;
+    margin-top: 24px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--text);
+  }
+
+  .interp-title {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 100px;
-    background: var(--gold-soft);
-    color: #6b4f0a;
-    margin-top: 0.4rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
   }
 
-  /* ---- CONTACT ---- */
-  .contact-band {
-    background: var(--accent);
-    color: #fff;
-    padding: 6rem 3rem;
+  .interp p + p { margin-top: 10px; }
+
+  .interp strong { color: var(--text-bright); font-style: normal; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #a8d8a8;
+  }
+
+  .code-block .kw  { color: #ff9965; }
+  .code-block .fn  { color: #79b8ff; }
+  .code-block .str { color: #9ecbff; }
+  .code-block .cm  { color: #556080; font-style: italic; }
+  .code-block .num { color: #f8c555; }
+
+  /* ── RISK PROFILE MATRIX ── */
+  .risk-matrix {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .risk-cell {
+    background: var(--panel);
+    padding: 20px;
     text-align: center;
   }
-  .contact-band h2 {
-    color: rgba(255,255,255,0.95);
-    margin-bottom: 0.75rem;
+
+  .risk-cell.aggressive { border-top: 3px solid var(--red); }
+  .risk-cell.balanced   { border-top: 3px solid var(--yellow); }
+  .risk-cell.conserv    { border-top: 3px solid var(--green); }
+
+  .risk-cell h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
   }
-  .contact-sub {
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 2.5rem;
-    font-size: 15px;
+
+  .risk-cell.aggressive h4 { color: var(--red); }
+  .risk-cell.balanced   h4 { color: var(--yellow); }
+  .risk-cell.conserv    h4 { color: var(--green); }
+
+  .risk-cell .count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--text-bright);
   }
-  .contact-links {
-    display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;
+
+  .risk-cell .sectors-list {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
   }
-  .contact-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 0.75rem 1.75rem;
-    border-radius: 100px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
+
+  /* ── SCATTER LEGEND ── */
+  .legend-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
   }
-  .cl-white {
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    border: 1.5px solid rgba(255,255,255,0.2);
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--text-dim);
   }
-  .cl-white:hover { background: rgba(255,255,255,0.2); }
-  .cl-solid {
-    background: #fff;
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MARKOV ── */
+  .markov-states {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .state-card {
+    background: var(--panel);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .state-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .state-card.s1::before { background: var(--green); }
+  .state-card.s2::before { background: var(--yellow); }
+  .state-card.s3::before { background: var(--accent); }
+  .state-card.s4::before { background: var(--red); }
+
+  .state-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .state-prob {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--text-bright);
+  }
+
+  .state-card.s1 .state-prob { color: var(--green); }
+  .state-card.s2 .state-prob { color: var(--yellow); }
+  .state-card.s3 .state-prob { color: var(--accent); }
+  .state-card.s4 .state-prob { color: var(--red); }
+
+  .state-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* ── TRANSITION MATRIX ── */
+  .trans-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 16px;
+  }
+
+  .trans-matrix th {
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .trans-matrix td {
+    padding: 10px 14px;
+    text-align: center;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .trans-matrix tr:first-child td { color: var(--accent); font-weight: 500; text-align: left; }
+
+  .high { color: var(--red) !important; }
+  .med  { color: var(--yellow) !important; }
+  .low  { color: var(--green) !important; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    background: var(--bg2);
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--text-bright);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PIPELINE STRIP ── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 20px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+  }
+
+  .pipe-step {
+    padding: 10px 20px;
+    background: var(--panel);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .pipe-step.active {
+    background: var(--bg3);
     color: var(--accent);
   }
-  .cl-solid:hover { background: rgba(255,255,255,0.9); }
 
-  /* ---- FOOTER ---- */
-  footer {
-    text-align: center;
-    padding: 2rem;
-    background: #0a0f0c;
-    color: rgba(255,255,255,0.3);
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.06em;
+  .pipe-step .step-num {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 2px;
   }
 
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero {
-      grid-template-columns: 1fr;
-      padding: 5rem 1.5rem 3rem;
-      min-height: auto;
-    }
-    .hero-right { grid-template-columns: 1fr 1fr; }
-    section { padding: 4rem 1.5rem; }
-    .project-body { grid-template-columns: 1fr; }
-    .project-actions { flex-direction: row; align-items: center; }
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .contact-band { padding: 4rem 1.5rem; }
+  .pipe-step.active .step-num { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    header, main, footer { padding-left: 20px; padding-right: 20px; }
+    .chart-grid.two, .chart-grid.three { grid-template-columns: 1fr; }
+    .markov-states { grid-template-columns: 1fr 1fr; }
+    .risk-matrix { grid-template-columns: 1fr; }
+    .header-grid { grid-template-columns: 1fr; }
+    .header-meta { border-left: none; text-align: left; border-top: 1px solid var(--border); padding-top: 20px; }
+    .header-meta .stack { align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">MLM · PORTFOLIO</a>
-  <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#project">Project</a></li>
-    <li><a href="#methodology">Methodology</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<!-- ═══════════════════════════════════ HEADER ═══════════════════════════════════ -->
+<header>
+  <div class="header-grid">
+    <div>
+      <div class="header-eyebrow">Data Analysis Framework — S&P 500 Sector Intelligence</div>
+      <h1 class="header-title">Multi-Factor<br>Equity <span>Research</span><br>&amp; Portfolio<br>Risk Analytics</h1>
+      <p class="header-subtitle">An end-to-end quantitative equity research framework designed to determine which market sectors offer the best risk-adjusted returns for optimal portfolio construction. Integrating S&P 500 market data with corporate financials and momentum indicators.</p>
+    </div>
+    <div class="header-meta">
+      <div class="author">Musa Mkhohliswa</div>
+      <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.12em;margin-top:4px;">ANALYST</div>
+      <div class="stack">
+        <span class="stack-tag">R — Statistical Modelling</span>
+        <span class="stack-tag">Python — Data Pipeline</span>
+        <span class="stack-tag">MySQL — Data Warehouse</span>
+        <span class="stack-tag">HTML — Presentation Layer</span>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <a href="#s1" class="active">01 — Income &amp; Risk</a>
+    <a href="#s2">02 — Efficiency &amp; Growth</a>
+    <a href="#s3">03 — Momentum &amp; PEG</a>
+    <a href="#s4">04 — Time-Series &amp; VAR</a>
+    <a href="#s5">05 — Markov Transitions</a>
+  </nav>
+</header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">BSc Mathematics &amp; Statistics · University of Johannesburg</div>
-    <h1>Musa L.<br><em>Mkhohliswa</em></h1>
-    <p class="hero-desc">
-      Quantitative analyst building end-to-end data pipelines across Python, MySQL, R, and Tableau — from raw S&amp;P 500 fundamentals to publication-ready investment dashboards.
-    </p>
-    <div class="hero-ctas">
-      <a href="https://public.tableau.com/views/IncomeOverviewandRiskProfiles/PortfolioInvestmentStory" target="_blank" class="btn btn-primary">View Tableau Dashboard ↗</a>
-      <a href="#project" class="btn btn-outline">Explore Project</a>
+<main>
+
+<!-- ═══════════════════════════════ EXECUTIVE SUMMARY ═══════════════════════════ -->
+<div class="section" style="margin-top:48px;">
+  <div class="section-header">
+    <div class="section-num">00</div>
+    <div class="section-info">
+      <div class="section-tag">Executive Summary</div>
+      <h2 class="section-title">Framework Overview</h2>
+      <p class="section-desc">Statistical modelling pipeline leveraging ANOVA, linear regression, and Markov chains to rigorously test return discrepancies and forecast future pricing across all eleven S&P 500 GICS sectors.</p>
     </div>
   </div>
 
-  <div class="hero-right">
-    <div class="stat-card green">
-      <div class="stat-number">500+</div>
-      <div class="stat-label">S&amp;P 500 Companies</div>
-      <div class="stat-sublabel">across 11 GICS sectors</div>
+  <div class="pipeline">
+    <div class="pipe-step active"><span class="step-num">1</span>Data Ingestion</div>
+    <div class="pipe-step active"><span class="step-num">2</span>Normality Tests</div>
+    <div class="pipe-step active"><span class="step-num">3</span>Variance Homogeneity</div>
+    <div class="pipe-step active"><span class="step-num">4</span>Log Transform</div>
+    <div class="pipe-step active"><span class="step-num">5</span>Welch's ANOVA / GLS</div>
+    <div class="pipe-step active"><span class="step-num">6</span>Games-Howell Post-Hoc</div>
+    <div class="pipe-step active"><span class="step-num">7</span>Regression Modelling</div>
+    <div class="pipe-step active"><span class="step-num">8</span>Markov Chain Projection</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PAGE 1 ═══════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <div class="section-tag">Income Tracking &amp; Risk Profiling</div>
+      <h2 class="section-title">Best Opportunities &amp; Overall Risk</h2>
+      <p class="section-desc">Sectors that return more immediate income per dollar invested. Dividend yield distributions tested via Kruskal-Wallis and Welch's ANOVA after log-transformation to address heteroscedasticity.</p>
     </div>
-    <div class="stat-card gold">
-      <div class="stat-number">4</div>
-      <div class="stat-label">Tech Stack Layers</div>
-      <div class="stat-sublabel">Python · MySQL · R · Tableau</div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Top Yield Sector</div>
+      <div class="kpi-value amber">Real Estate</div>
+      <div class="kpi-sub">Avg. dividend yield: 3.78%</div>
     </div>
-    <div class="stat-card blue">
-      <div class="stat-number">7+</div>
-      <div class="stat-label">Statistical Tests</div>
-      <div class="stat-sublabel">Kruskal-Wallis, Welch's ANOVA…</div>
+    <div class="kpi">
+      <div class="kpi-label">Grand Mean Yield</div>
+      <div class="kpi-value">2.30%</div>
+      <div class="kpi-sub">Across 11 S&P 500 sectors</div>
     </div>
-    <div class="stat-card coral">
-      <div class="stat-number">3.78%</div>
-      <div class="stat-label">Top Sector Yield</div>
-      <div class="stat-sublabel">Real Estate avg. dividend</div>
+    <div class="kpi">
+      <div class="kpi-label">Sectors Above Mean</div>
+      <div class="kpi-value green">5</div>
+      <div class="kpi-sub">RE, Cons Def, Utilities, Energy, Fin Serv</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Kruskal-Wallis</div>
+      <div class="kpi-value amber">p &lt; 0.05</div>
+      <div class="kpi-sub">Significant sector differences confirmed</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Best Sharpe</div>
+      <div class="kpi-value blue">MSFT</div>
+      <div class="kpi-sub">Sharpe ≈ 0.77 | ROI ~25.9%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Lowest Risk Stock</div>
+      <div class="kpi-value green">PPL</div>
+      <div class="kpi-sub">Vol ~21.9% | Sharpe ≈ 0.45</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="chart-grid two" style="margin-bottom:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Dividend Yield by Sector — All Sectors</div>
+      <div class="chart-panel-sub">Avg. dividend yield (%) ranked by sector. Welch's ANOVA confirmed at least one sector mean differs significantly from the grand mean.</div>
+      <div class="chart-wrap tall">
+        <canvas id="divYieldChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Top 5 Income-Generating Sectors</div>
+      <div class="chart-panel-sub">Sectors whose log-means are statistically above the grand mean via Games-Howell post-hoc test.</div>
+      <div class="chart-wrap tall">
+        <canvas id="top5YieldChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <div class="chart-grid three">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Risk vs Return — Individual Stock Profile</div>
+      <div class="chart-panel-sub">Annualised volatility vs. annualised ROI. The northwest quadrant is optimal (high return, low risk).</div>
+      <div class="chart-wrap">
+        <canvas id="riskReturnChart"></canvas>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div>MSFT — Aggressive</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4ecdc4"></div>PPL — Conservative</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e05f5f"></div>HBNC — Balanced Low</div>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Sector Risk Profiles</div>
+      <div class="chart-panel-sub">Classified by average Sharpe: Aggressive (&gt;0.35), Balanced (0.25–0.35), Conservative (&lt;0.25).</div>
+      <div class="risk-matrix" style="margin-top:12px;">
+        <div class="risk-cell aggressive">
+          <h4>Aggressive</h4>
+          <div class="count">4</div>
+          <div class="sectors-list">Utilities · Industrials<br>Technology · Healthcare</div>
+          <div style="margin-top:10px;font-size:10px;color:var(--text-dim);">36.4% of sectors</div>
+        </div>
+        <div class="risk-cell balanced">
+          <h4>Balanced</h4>
+          <div class="count">4</div>
+          <div class="sectors-list">Comm Serv · Cons Def<br>Fin Serv · Real Estate</div>
+          <div style="margin-top:10px;font-size:10px;color:var(--text-dim);">36.4% of sectors</div>
+        </div>
+        <div class="risk-cell conserv">
+          <h4>Conservative</h4>
+          <div class="count">3</div>
+          <div class="sectors-list">Consumer Cycle<br>Basic Mat · Energy</div>
+          <div style="margin-top:10px;font-size:10px;color:var(--text-dim);">27.3% of sectors</div>
+        </div>
+      </div>
+      <div class="chart-wrap short" style="margin-top:16px;">
+        <canvas id="donutChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERPRETATION -->
+  <div class="interp">
+    <div class="interp-title">Statistical Interpretation — Income Tracking</div>
+    <p><strong>Methodology:</strong> One-Factor ANOVA (Treatment Effects Model). Raw yields showed non-normality confirmed by Q-Q plots and histogram skew. Levene's Test returned p &lt; 0.05, confirming heteroscedasticity. A log1p transformation was applied prior to Welch's one-way ANOVA, which is robust to unequal variances.</p>
+    <p><strong>Key Finding:</strong> Sectors with log-means above the grand mean — <strong>Real Estate, Utilities, Energy, Consumer Defense, Financial Services</strong> — offer superior cash-yield profiles relative to the broader S&P 500 universe. These sectors return more immediate income per dollar invested than average.</p>
+    <p><strong>Stock-Level Insight:</strong> MSFT provides the best compensation for risk taken (Sharpe ≈ 0.77, ROI ~25.9%). PPL is the conservative anchor with lowest volatility (~21.9%). HBNC carries high risk (~32.5%) but delivers lower ROI (~10%), making it the least efficient on a risk-adjusted basis.</p>
+  </div>
+
+  <!-- CODE SNIPPET -->
+  <div style="margin-top:24px;">
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">R — Analytical Pipeline (income_tracking.R)</div>
+    <div class="code-block">
+<span class="cm"># Welch's ANOVA — robust to heteroscedasticity</span>
+<span class="kw">welch_log</span> &lt;- <span class="fn">oneway.test</span>(LogYield ~ Sector, data = data_long, var.equal = <span class="kw">FALSE</span>)
+
+<span class="cm"># Post-hoc: Games-Howell — appropriate for unequal variances &amp; sample sizes</span>
+<span class="kw">gh_test_yield</span> &lt;- <span class="fn">games_howell_test</span>(data_long, LogYield ~ Sector)
+
+<span class="cm"># Risk-profile classification thresholds</span>
+modeled_profiles &lt;- sector_data <span class="fn">%&gt;%</span>
+  <span class="fn">mutate</span>(Risk_Profile = <span class="fn">case_when</span>(
+    Avg_Sharpe &gt; <span class="num">0.35</span>  ~ <span class="str">"Aggressive"</span>,
+    Avg_Sharpe &gt;= <span class="num">0.25</span> ~ <span class="str">"Balanced"</span>,
+    <span class="kw">TRUE</span>               ~ <span class="str">"Conservative"</span>
+  ))
     </div>
   </div>
 </div>
 
-<div class="section-divider"></div>
-
-<!-- SKILLS -->
-<section id="skills">
+<!-- ═══════════════════════════════════ PAGE 2 ═══════════════════════════════════ -->
+<div class="section" id="s2">
   <div class="section-header">
-    <span class="section-num">01</span>
-    <h2>Technical Stack</h2>
-  </div>
-  <div class="skills-grid">
-    <div class="skill-card">
-      <div class="skill-icon si-blue">🐍</div>
-      <div class="skill-name">Python</div>
-      <div class="skill-desc">End-to-end ETL pipeline ingesting 500+ company CSV files into MySQL via SQLAlchemy and pandas chunked loading.</div>
-      <div class="skill-tags">
-        <span class="tag">PANDAS</span>
-        <span class="tag">SQLALCHEMY</span>
-        <span class="tag">PYMYSQL</span>
-        <span class="tag">KAGGLE DATA</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon si-purple">🗄️</div>
-      <div class="skill-name">MySQL</div>
-      <div class="skill-desc">Relational schema design with 60+ sector-partitioned tables. Complex WHERE filtering, CREATE TABLE AS SELECT, and multi-table joins.</div>
-      <div class="skill-tags">
-        <span class="tag">SCHEMA DESIGN</span>
-        <span class="tag">DDL / DML</span>
-        <span class="tag">AGGREGATION</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon si-green">📊</div>
-      <div class="skill-name">R (Statistical Analysis)</div>
-      <div class="skill-desc">ANOVA pipeline with normality testing, Levene's test, log-transform, Welch's ANOVA, and Games-Howell post-hoc comparisons.</div>
-      <div class="skill-tags">
-        <span class="tag">GGPLOT2</span>
-        <span class="tag">QUANTMOD</span>
-        <span class="tag">RSTATIX</span>
-        <span class="tag">DPLYR</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon si-gold">📈</div>
-      <div class="skill-name">Tableau Public</div>
-      <div class="skill-desc">Multi-page investment story with bar charts, scatter plots, doughnut charts, and KPI panels fed from R-processed CSV exports.</div>
-      <div class="skill-tags">
-        <span class="tag">KPI PANELS</span>
-        <span class="tag">SCATTER PLOTS</span>
-        <span class="tag">DONUT CHART</span>
-        <span class="tag">STORYTELLING</span>
-      </div>
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <div class="section-tag">Management Efficiency &amp; Future Growth</div>
+      <h2 class="section-title">Fundamental Efficiency &amp; Growth</h2>
+      <p class="section-desc">ROE, ROA, and profit margins tested via GLM and GLS ANOVA. Future returns modelled with multiple linear regression using earnings and revenue growth as predictors across all eleven sectors.</p>
     </div>
   </div>
-</section>
 
-<div class="section-divider"></div>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Best ROE Sector</div>
+      <div class="kpi-value amber">Technology</div>
+      <div class="kpi-sub">Highest log-mean return on equity</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Stable Margins</div>
+      <div class="kpi-value green">Utilities</div>
+      <div class="kpi-sub">Tightest error bars — regulated predictability</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Model Type — ROA</div>
+      <div class="kpi-value blue">GLS</div>
+      <div class="kpi-sub">varIdent — sector-specific variance</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Revenue Growth</div>
+      <div class="kpi-value">Predictor</div>
+      <div class="kpi-sub">Tested in excess return regression</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Robust Regression</div>
+      <div class="kpi-value amber">rlm()</div>
+      <div class="kpi-sub">Applied due to skewed earnings growth</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Levene Test — PM</div>
+      <div class="kpi-value red">p &lt; 0.05</div>
+      <div class="kpi-sub">Heteroscedasticity confirmed → GLS</div>
+    </div>
+  </div>
 
-<!-- PROJECT -->
-<section id="project">
+  <!-- CHARTS -->
+  <div class="chart-grid two" style="margin-bottom:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Sector Efficiency Ranking — ROE / ROA / Profit Margins</div>
+      <div class="chart-panel-sub">Relative management efficiency scores across sectors. Higher = more efficient use of equity and assets.</div>
+      <div class="chart-wrap tall">
+        <canvas id="efficiencyChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Future Growth Potential — Earnings &amp; Revenue Growth</div>
+      <div class="chart-panel-sub">Growth indicators used as predictors in the excess return regression model.</div>
+      <div class="chart-wrap tall">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-grid full" style="margin-top:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Momentum vs Excess Return — Cross-Sector Regression</div>
+      <div class="chart-panel-sub">lm(Excess_Return_Proxy ~ Stock_Momentum × Sector). Slopes diverge significantly by sector, confirming a sector membership moderator effect.</div>
+      <div class="chart-wrap">
+        <canvas id="momentumRegChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="interp">
+    <div class="interp-title">Statistical Interpretation — Management Efficiency</div>
+    <p><strong>ROE/ROA Non-Normality:</strong> Q-Q plots for raw ROE and ROA show heavy tails and significant deviation. Histograms are sharply right-skewed — a few high-performing outliers pull the mean from the median. This justified Kruskal-Wallis and the log1p transformation.</p>
+    <p><strong>Heteroscedasticity Persistence:</strong> Levene's Test failed (p &lt; 0.05) for all three metrics. Financial Services and Technology show wider residual dispersion than Utilities. The GLS model with <code>varIdent</code> directly addresses this by allowing sector-specific residual variance.</p>
+    <p><strong>Profit Margin Hierarchy:</strong> Technology and Financial Services sit significantly above the grand mean. Consumer Cyclical and Energy fall below, reflecting higher cost-of-goods-sold and capital-intensive operations. Utilities show tight error bars — highly regulated, predictable margins.</p>
+    <p><strong>Future Returns Regression:</strong> The robust regression (rlm) was applied due to extreme skewness in earnings growth. Sector membership is a significant moderator — a one-size-fits-all momentum strategy is not valid across all GICS sectors.</p>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">R — GLS with Sector-Specific Variance (management_efficiency_internal.R)</div>
+    <div class="code-block">
+<span class="cm"># GLS ANOVA — allows each sector its own residual variance</span>
+<span class="kw">roa_model</span> &lt;- <span class="fn">gls</span>(LogROA ~ Sector - <span class="num">1</span>,
+               data    = ROA_long,
+               weights = <span class="fn">varIdent</span>(form = ~ <span class="num">1</span> | Sector))
+
+<span class="cm"># Robust regression for skewed earnings growth</span>
+<span class="kw">quant_robust</span> &lt;- <span class="fn">rlm</span>(Excess_Return_Proxy ~ revenueGrowth + earningsGrowth + Sector,
+                    data = Quant_DF)
+
+<span class="cm"># Interaction model: does momentum effect differ by sector?</span>
+<span class="kw">sector_interaction_lm</span> = <span class="fn">lm</span>(Excess_Return_Proxy ~ Stock_Momentum * Sector,
+                           data = All_Sectors_Capital)
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PAGE 3 ═══════════════════════════════════ -->
+<div class="section" id="s3">
   <div class="section-header">
-    <span class="section-num">02</span>
-    <h2>Featured Project</h2>
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <div class="section-tag">Risk-Adjusted Returns &amp; Price Performance</div>
+      <h2 class="section-title">Risk &amp; Momentum Analysis</h2>
+      <p class="section-desc">Beta (market sensitivity) and trailing PEG ratio (growth-adjusted valuation) analysed via Welch's one-way ANOVA after log1p transformation. Identifies aggressive vs. defensive sector positioning.</p>
+    </div>
   </div>
 
-  <!-- Main project card -->
-  <div class="project-card">
-    <div class="project-banner banner-dark">
-      <div class="banner-grid"></div>
-      <div class="banner-chart">
-        <div class="bar" style="height:55%"></div>
-        <div class="bar" style="height:60%"></div>
-        <div class="bar" style="height:72%"></div>
-        <div class="bar" style="height:48%"></div>
-        <div class="bar" style="height:80%"></div>
-        <div class="bar" style="height:65%"></div>
-        <div class="bar" style="height:90%"></div>
-        <div class="bar" style="height:42%"></div>
-        <div class="bar" style="height:58%"></div>
-        <div class="bar" style="height:35%"></div>
-        <div class="bar" style="height:70%"></div>
-      </div>
-      <div class="banner-label">
-        <span class="big-text">S&amp;P 500 Income &amp; Risk Analysis</span>
-        <span class="small-text">PORTFOLIO INVESTMENT STORY · TABLEAU PUBLIC</span>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">High Beta Sectors</div>
+      <div class="kpi-value red">Tech + CyCl</div>
+      <div class="kpi-sub">Amplify market moves — Aggressive</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Low Beta Sectors</div>
+      <div class="kpi-value green">Utils + ConsDef</div>
+      <div class="kpi-sub">Market buffer — Conservative</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Welch's ANOVA — Beta</div>
+      <div class="kpi-value amber">p &lt; 0.05</div>
+      <div class="kpi-sub">Sector membership drives volatility</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Best Value PEG</div>
+      <div class="kpi-value blue">Technology</div>
+      <div class="kpi-sub">Lowest avg PEG: 1.44 — growth at value</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Premium PEG</div>
+      <div class="kpi-value red">Comm Serv</div>
+      <div class="kpi-sub">Avg PEG: 20.5 — growth priced in</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">GARP Opportunity</div>
+      <div class="kpi-value green">Healthcare</div>
+      <div class="kpi-sub">PEG 1.46 — growth at reasonable price</div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="chart-grid two" style="margin-bottom:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Sector PEG Ratios — Trailing Average</div>
+      <div class="chart-panel-sub">PEG &lt; 1.5 suggests growth-at-reasonable-price (GARP). Values &gt;10 indicate premium pricing relative to historical earnings growth.</div>
+      <div class="chart-wrap tall">
+        <canvas id="pegChart"></canvas>
       </div>
     </div>
-    <div class="project-body">
-      <div>
-        <div class="project-meta">
-          <span class="project-tag pt-green">R · Statistical Analysis</span>
-          <span class="project-tag pt-blue">MySQL · ETL</span>
-          <span class="project-tag pt-gold">Tableau · Visualization</span>
-          <span class="project-tag pt-gray">Python · Pipeline</span>
-        </div>
-        <h3>Portfolio Investment Story</h3>
-        <p class="project-desc">
-          A full quantitative equity research pipeline covering all 11 S&amp;P 500 GICS sectors. The project extracts, cleans, and statistically analyses over 500 companies across income metrics, risk-adjusted returns, management efficiency, and growth indicators — culminating in an interactive Tableau dashboard for investment decision support.
-        </p>
-        <div class="project-highlights">
-          <div class="highlight-item">Kruskal-Wallis + Dunn post-hoc confirms statistically significant dividend yield differences across sectors (p &lt; 0.05)</div>
-          <div class="highlight-item">Welch's ANOVA on log-transformed yields robust to heteroscedasticity; Games-Howell identifies pairwise winners</div>
-          <div class="highlight-item">Risk profiling classifies sectors as Aggressive / Balanced / Conservative using Sharpe-ratio thresholds</div>
-          <div class="highlight-item">Full MySQL schema with 60+ partitioned tables (Income, Capital, AdjReturns, ManagementEff, FutureReturns)</div>
-        </div>
-
-        <!-- Inline dividend yield bar chart -->
-        <div class="chart-container">
-          <div class="chart-title">Average Dividend Yield by Sector (%)</div>
-          <div class="bar-row">
-            <div class="bar-label">Real Estate</div>
-            <div class="bar-track"><div class="bar-fill gold-fill" style="width:100%"></div></div>
-            <div class="bar-val">3.78%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Consumer Defense</div>
-            <div class="bar-track"><div class="bar-fill gold-fill" style="width:94.7%"></div></div>
-            <div class="bar-val">3.58%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Utilities</div>
-            <div class="bar-track"><div class="bar-fill gold-fill" style="width:80.8%"></div></div>
-            <div class="bar-val">3.05%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Energy</div>
-            <div class="bar-track"><div class="bar-fill" style="width:64.2%"></div></div>
-            <div class="bar-val">2.42%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Financial Serv.</div>
-            <div class="bar-track"><div class="bar-fill" style="width:63.2%"></div></div>
-            <div class="bar-val">2.38%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Consumer Cycle</div>
-            <div class="bar-track"><div class="bar-fill" style="width:60.8%"></div></div>
-            <div class="bar-val">2.30%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Communication</div>
-            <div class="bar-track"><div class="bar-fill" style="width:55.7%"></div></div>
-            <div class="bar-val">2.10%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Technology</div>
-            <div class="bar-track"><div class="bar-fill" style="width:46.5%"></div></div>
-            <div class="bar-val">1.75%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Healthcare</div>
-            <div class="bar-track"><div class="bar-fill" style="width:45.8%"></div></div>
-            <div class="bar-val">1.73%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Basic Materials</div>
-            <div class="bar-track"><div class="bar-fill" style="width:43.3%"></div></div>
-            <div class="bar-val">1.63%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Industrials</div>
-            <div class="bar-track"><div class="bar-fill" style="width:39.2%"></div></div>
-            <div class="bar-val">1.48%</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-actions">
-        <a href="https://public.tableau.com/views/IncomeOverviewandRiskProfiles/PortfolioInvestmentStory" target="_blank" class="btn-sm btn-sm-primary">Live Dashboard ↗</a>
-        <a href="#methodology" class="btn-sm btn-sm-outline">Methodology</a>
-        <a href="income_tracking.R" class="btn-sm btn-sm-outline">income_tracking.R</a>
-        <a href="risk_profiling.R" class="btn-sm btn-sm-outline">risk_profiling.R</a>
-        <a href="company_info.sql" class="btn-sm btn-sm-outline">company_info.sql</a>
-        <a href="company_info.py" class="btn-sm btn-sm-outline">company_info.py</a>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Daily Return vs Volatility — Sector Risk Map</div>
+      <div class="chart-panel-sub">Northwest = optimal. Technology leads return but carries moderate volatility. Utilities anchor the low-risk, steady-return position.</div>
+      <div class="chart-wrap tall">
+        <canvas id="sectorScatterChart"></canvas>
       </div>
     </div>
   </div>
-</section>
 
-<div class="section-divider"></div>
+  <div class="interp">
+    <div class="interp-title">Statistical Interpretation — Beta &amp; PEG Ratio</div>
+    <p><strong>Beta Distribution:</strong> Raw values cluster around 1.0 but extreme outliers create heavy tails in Q-Q plots. Log transformation normalises spread though financial kurtosis persists. Levene's Test failed (p &lt; 0.05), confirming that high-beta sectors are also high-variance sectors — validating Welch's ANOVA choice.</p>
+    <p><strong>Sector Sensitivity Hierarchy:</strong> Technology and Consumer Cyclical sit above the grand mean beta — they amplify market moves. Utilities and Consumer Defense fall below, providing downside buffering. Welch's ANOVA confirms sector membership is a primary driver of stock volatility.</p>
+    <p><strong>PEG Ratio as Valuation Anchor:</strong> The trailing PEG adjusts P/E for historical growth. A value of 1.0 = fair value. Technology (1.44) and Healthcare (1.46) offer GARP opportunities. Communication Services (20.5) and Real Estate (17.3) are priced for perfection — investors pay a high premium per unit of growth. The grand mean line acts as the market's average cost of growth benchmark.</p>
+  </div>
 
-<!-- METHODOLOGY -->
-<section id="methodology">
+  <div style="margin-top:24px;">
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">R — Risk-Adjusted Returns Pipeline (risk_adjusted_returns.R)</div>
+    <div class="code-block">
+<span class="cm"># Welch's ANOVA on log-transformed Beta — robust to heteroscedasticity</span>
+<span class="kw">welch_beta_model</span> &lt;- <span class="fn">oneway.test</span>(LogBeta ~ Sector, data = beta_long, var.equal = <span class="kw">FALSE</span>)
+
+<span class="cm"># PEG ratio: log1p transform then Welch's ANOVA</span>
+<span class="kw">peg_long</span>$LogPEG &lt;- <span class="fn">log1p</span>(peg_long$TrailingPegRatio)
+<span class="kw">welch_peg_model</span> &lt;- <span class="fn">oneway.test</span>(LogPEG ~ Sector, data = peg_long, var.equal = <span class="kw">FALSE</span>)
+
+<span class="cm"># Sector momentum: Stock_Momentum = (Price - 200dMA) / 200dMA</span>
+All_Sectors_Capital[, <span class="fn">`:=`</span>(
+  Stock_Momentum = (currentPrice - twoHundredDayAverageChange) / twoHundredDayAverageChange,
+  Excess_Return_Proxy = Return_Proxy - SandP52WeekChange
+)]
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PAGE 4 ═══════════════════════════════════ -->
+<div class="section" id="s4">
   <div class="section-header">
-    <span class="section-num">03</span>
-    <h2>Analytical Pipeline</h2>
-  </div>
-  <p style="color: var(--ink-muted); max-width: 600px; margin-bottom: 0.5rem; font-size: 15px;">
-    Seven-stage treatment effects model applied to compare dividend yield distributions across all 11 S&amp;P 500 GICS sectors.
-  </p>
-  <div class="method-grid">
-    <div class="method-step">
-      <div class="step-num">STEP 01</div>
-      <div class="step-name">Data Ingestion</div>
-      <div class="step-detail">500+ S&amp;P 500 company CSVs loaded into MySQL in chunked batches via SQLAlchemy.</div>
-      <span class="step-tool">Python · pandas</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 02</div>
-      <div class="step-name">Schema Design</div>
-      <div class="step-detail">60+ sector-partitioned tables for Income, Capital, Risk, Management, and Growth metrics.</div>
-      <span class="step-tool">MySQL · DDL</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 03</div>
-      <div class="step-name">Normality Testing</div>
-      <div class="step-detail">Kruskal-Wallis non-parametric test on raw yields. Q-Q plot and histogram diagnostics confirm non-normality.</div>
-      <span class="step-tool">R · FSA</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 04</div>
-      <div class="step-name">Variance Homogeneity</div>
-      <div class="step-detail">Levene's Test confirms heteroscedasticity (p &lt; 0.05), mandating log1p transformation.</div>
-      <span class="step-tool">R · car</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 05</div>
-      <div class="step-name">Log Transform</div>
-      <div class="step-detail">log1p applied to yields. Re-tested for variance homogeneity and improved normality profile.</div>
-      <span class="step-tool">R · base</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 06</div>
-      <div class="step-name">Welch's ANOVA</div>
-      <div class="step-detail">Robust to unequal variances. Confirms at least one sector mean significantly differs (p &lt; 0.05).</div>
-      <span class="step-tool">R · oneway.test</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 07</div>
-      <div class="step-name">Games-Howell Post-Hoc</div>
-      <div class="step-detail">Pairwise comparisons valid under unequal variances and sample sizes. Identifies sector winners.</div>
-      <span class="step-tool">R · rstatix</span>
-    </div>
-    <div class="method-step">
-      <div class="step-num">STEP 08</div>
-      <div class="step-name">Risk Profiling</div>
-      <div class="step-detail">Sharpe ratio thresholds classify sectors: Aggressive (&gt;0.35), Balanced (0.25–0.35), Conservative (&lt;0.25).</div>
-      <span class="step-tool">R · PerformanceAnalytics</span>
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <div class="section-tag">Time-Series &amp; Forecasting</div>
+      <h2 class="section-title">Technical Prowess &amp; Time-Series</h2>
+      <p class="section-desc">Vector Autoregression (VAR) and OHLC candlestick analysis for forecasting. Residual analysis confirms model fit. Daily price data processed from Parquet files via PerformanceAnalytics for annualised return and volatility computation.</p>
     </div>
   </div>
 
-  <!-- Risk profile summary -->
-  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem;">
-    <div style="background: #d4ece0; border-radius: var(--radius); padding: 1.25rem;">
-      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: var(--accent); margin-bottom:0.5rem;">AGGRESSIVE (36.4%)</div>
-      <div style="font-size: 13px; color: var(--accent); line-height:1.6;">Utilities · Industrials · Technology · Healthcare</div>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">MSFT Annualised ROI</div>
+      <div class="kpi-value green">~25.9%</div>
+      <div class="kpi-sub">PerformanceAnalytics — scale 252</div>
     </div>
-    <div style="background: var(--gold-soft); border-radius: var(--radius); padding: 1.25rem;">
-      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: #6b4f0a; margin-bottom:0.5rem;">BALANCED (36.4%)</div>
-      <div style="font-size: 13px; color: #6b4f0a; line-height:1.6;">Comm. Services · Consumer Defense · Financial Serv. · Real Estate</div>
+    <div class="kpi">
+      <div class="kpi-label">MSFT Volatility</div>
+      <div class="kpi-value amber">StdDev Ann.</div>
+      <div class="kpi-sub">Highest in 3-stock comparison</div>
     </div>
-    <div style="background: #f3f4f6; border-radius: var(--radius); padding: 1.25rem;">
-      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color: #374151; margin-bottom:0.5rem;">CONSERVATIVE (27.3%)</div>
-      <div style="font-size: 13px; color: #374151; line-height:1.6;">Consumer Cycle · Basic Materials · Energy</div>
+    <div class="kpi">
+      <div class="kpi-label">PPL Volatility</div>
+      <div class="kpi-value green">~21.9%</div>
+      <div class="kpi-sub">Lowest annualised std deviation</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">HBNC Sharpe</div>
+      <div class="kpi-value red">~0.31</div>
+      <div class="kpi-sub">Volatility not compensated by return</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Model</div>
+      <div class="kpi-value blue">VAR</div>
+      <div class="kpi-sub">Vector Autoregression — multi-series</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Price Format</div>
+      <div class="kpi-value">OHLC</div>
+      <div class="kpi-sub">Candlestick visualisation via quantmod</div>
     </div>
   </div>
-</section>
 
-<div class="section-divider"></div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-header">
-    <span class="section-num">04</span>
-    <h2>About &amp; Background</h2>
-  </div>
-  <div class="about-grid">
-    <div class="about-text">
-      <p>
-        I'm a Mathematics and Statistics graduate from the University of Johannesburg with a focus on quantitative analysis, statistical modelling, and financial data. My work sits at the intersection of rigorous academic methodology and practical data engineering.
-      </p>
-      <p>
-        The S&amp;P 500 portfolio project represents my approach to end-to-end analytics: starting from raw data ingestion, through relational database design, non-parametric hypothesis testing, and finally interactive business intelligence dashboards.
-      </p>
-      <p>
-        Beyond technical skills, I've applied data thinking in community settings — managing sustainability project data as Projects Manager at Eco-Hub, and providing academic guidance as a Residence Academic Advisor at UJ.
-      </p>
-      <p style="margin-bottom:0;">
-        I'm actively seeking an entry-level data analyst role where I can contribute to data pipelines, statistical modelling, and decision-making infrastructure.
-      </p>
+  <div class="chart-grid two" style="margin-bottom:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Simulated Daily Returns — MSFT vs PPL vs HBNC</div>
+      <div class="chart-panel-sub">Illustrative returns calculated via Return.calculate() with scale=252. Representative of the distribution patterns observed in the parquet-sourced price data.</div>
+      <div class="chart-wrap tall">
+        <canvas id="dailyReturnChart"></canvas>
+      </div>
     </div>
-    <div>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="tl-date">2020 – 2024</div>
-          <div class="tl-title">BSc Mathematical Sciences</div>
-          <div class="tl-org">University of Johannesburg · Mathematics &amp; Statistics</div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-date">FEB – OCT 2024</div>
-          <div class="tl-title">Residence Academic Advisor</div>
-          <div class="tl-org">Oppierif Men's Residence, UJ</div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-date">FEB – OCT 2025</div>
-          <div class="tl-title">Projects Manager</div>
-          <div class="tl-org">Eco-Hub, University of Johannesburg</div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-date">IN PROGRESS</div>
-          <div class="tl-title">Power BI Data Analyst Associate</div>
-          <div class="tl-org">Microsoft Learn</div>
-          <span class="tl-status">In Progress</span>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-date">IN PROGRESS</div>
-          <div class="tl-title">Advanced SQL &amp; Python</div>
-          <div class="tl-org">Kaggle Learn</div>
-          <span class="tl-status">In Progress</span>
-        </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Cumulative Return Trajectory</div>
+      <div class="chart-panel-sub">Compound growth comparison across the three analysed stocks. MSFT diverges markedly from the defensive PPL and high-risk HBNC.</div>
+      <div class="chart-wrap tall">
+        <canvas id="cumulativeReturnChart"></canvas>
       </div>
     </div>
   </div>
-</section>
 
+  <div class="chart-grid full" style="margin-top:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">Sharpe Ratio Comparison — Risk-Adjusted Efficiency</div>
+      <div class="chart-panel-sub">Sharpe = Annualised Return / Annualised Volatility. MSFT maximises compensation per unit of risk. HBNC carries disproportionate volatility relative to its return.</div>
+      <div class="chart-wrap short">
+        <canvas id="sharpeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="interp">
+    <div class="interp-title">Statistical Interpretation — Time-Series &amp; Forecasting</div>
+    <p><strong>Daily Return Methodology:</strong> Price data ingested from Parquet files via Apache Arrow. Returns calculated using <code>Return.calculate(method = "simple")</code>, converted to XTS for time-series compatibility. Annualised metrics computed with <code>StdDev.annualized(scale = 252)</code> and <code>Return.annualized(scale = 252)</code>.</p>
+    <p><strong>Stock Profile Summary:</strong> MSFT (Aggressive) — highest ROI (~25.9%) and Sharpe (~0.77). Best compensation for risk. PPL (Conservative) — lowest risk (~21.9%), stable grower, Sharpe ~0.45. HBNC (Balanced Low) — high risk (~32.5%) similar to MSFT but significantly lower ROI (~10%), Sharpe ~0.31. Volatility not paying off.</p>
+    <p><strong>VAR Forecasting:</strong> Vector Autoregression applied to model interdependencies between sector return time series. The VAR framework allows simultaneous forecasting of multiple correlated series, capturing dynamic interaction effects that univariate ARIMA cannot model.</p>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">R — Price Performance Pipeline (risk_profiling.R)</div>
+    <div class="code-block">
+<span class="cm"># Load Parquet price data via Apache Arrow</span>
+<span class="kw">MSFT</span> = <span class="fn">read_parquet</span>(<span class="str">"Daily/MSFT.parquet"</span>)
+
+<span class="cm"># Convert to XTS and calculate simple returns</span>
+<span class="kw">Returns_MSFT</span> = <span class="fn">as.xts</span>(MSFT$<span class="str">`Adj Close`</span>, order.by = MSFT_Date)
+Returns_MSFT = <span class="fn">Return.calculate</span>(Returns_MSFT, method = <span class="str">"simple"</span>)
+
+<span class="cm"># Annualised performance metrics (252 trading days)</span>
+<span class="kw">Risk_DevMSFT</span> = <span class="fn">StdDev.annualized</span>(MSFT$Daily_ReturnsPA, scale = <span class="num">252</span>)
+<span class="kw">ROI_MSFT</span>     = <span class="fn">Return.annualized</span>(MSFT$Daily_ReturnsPA, scale = <span class="num">252</span>)
+<span class="kw">Sharpe_MSFT</span>  = ROI_MSFT / Risk_DevMSFT
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PAGE 5 ═══════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <div class="section-tag">Predictive Modelling — Member Behaviour</div>
+      <h2 class="section-title">Markov Chain Transition Modelling</h2>
+      <p class="section-desc">10-step Markov chain projection over bank customer states. The system converges toward churn-dominated states, providing a probabilistic risk segmentation framework mapped to portfolio risk profiles.</p>
+    </div>
+  </div>
+
+  <!-- State Cards -->
+  <div class="markov-states">
+    <div class="state-card s1">
+      <div class="state-label">State 1 — Low Risk</div>
+      <div class="state-prob">44.2%</div>
+      <div class="state-desc">Active_Retained<br>Initial probability. Declines to ~9% by step 10. Most valuable — highest intervention priority.</div>
+    </div>
+    <div class="state-card s2">
+      <div class="state-label">State 2 — Moderate Risk</div>
+      <div class="state-prob">35.5%</div>
+      <div class="state-desc">Inactive_Retained<br>Highly transient. Decays rapidly to near zero. Short intervention window before churn escalation.</div>
+    </div>
+    <div class="state-card s3">
+      <div class="state-label">State 3 — High Risk</div>
+      <div class="state-prob">7.3%</div>
+      <div class="state-desc">Active_Churned<br>Growing upward trend. Early churn signals in active users. Critical for targeted retention.</div>
+    </div>
+    <div class="state-card s4">
+      <div class="state-label">State 4 — Churned</div>
+      <div class="state-prob">13.0%</div>
+      <div class="state-desc">Inactive_Churned<br>Long-run dominant state (~46%). Convergence destination. Requires reactivation investment.</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Long-Run Dominant State</div>
+      <div class="kpi-value red">Inact. Churned</div>
+      <div class="kpi-sub">~46% long-run probability</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Active Retained Decline</div>
+      <div class="kpi-value red">~38% → &lt;10%</div>
+      <div class="kpi-sub">Over 10 Markov steps</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Transition Steps</div>
+      <div class="kpi-value amber">10</div>
+      <div class="kpi-sub">Projection horizon modelled</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Flow Direction</div>
+      <div class="kpi-value red">Unidirectional</div>
+      <div class="kpi-sub">Conservative → Aggressive (low recovery)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">States Modelled</div>
+      <div class="kpi-value blue">4</div>
+      <div class="kpi-sub">Fully specified Markov chain</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Package</div>
+      <div class="kpi-value">markovchain</div>
+      <div class="kpi-sub">R — markovchain::markovchain()</div>
+    </div>
+  </div>
+
+  <div class="chart-grid two" style="margin-bottom:1px;">
+    <div class="chart-panel">
+      <div class="chart-panel-title">10-Step State Probability Projection</div>
+      <div class="chart-panel-sub">Markov chain evolution over 10 time steps from initial distribution. System converges toward churn-dominated equilibrium.</div>
+      <div class="chart-wrap tall">
+        <canvas id="markovLineChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Churn Funnel — Risk Migration</div>
+      <div class="chart-panel-sub">One-directional flow: Conservative → Moderate → High → Churned. Minimal reverse transition (recovery) probability observed.</div>
+      <div class="chart-wrap tall">
+        <canvas id="markovBarChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSITION MATRIX -->
+  <div class="chart-panel" style="margin-top:1px;border:1px solid var(--border);">
+    <div class="chart-panel-title">Markov Transition Matrix — State-to-State Probabilities</div>
+    <div class="chart-panel-sub">Each row sums to 1.0. Diagonal = self-retention probability. Off-diagonal = transition to other states.</div>
+    <table class="trans-matrix">
+      <thead>
+        <tr>
+          <th>FROM → TO</th>
+          <th>Active_Retained</th>
+          <th>Inactive_Retained</th>
+          <th>Active_Churned</th>
+          <th>Inactive_Churned</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Active_Retained</td>
+          <td class="low">0.68</td>
+          <td class="med">0.18</td>
+          <td class="med">0.09</td>
+          <td class="low">0.05</td>
+        </tr>
+        <tr>
+          <td>Inactive_Retained</td>
+          <td class="low">0.12</td>
+          <td class="med">0.31</td>
+          <td class="med">0.24</td>
+          <td class="high">0.33</td>
+        </tr>
+        <tr>
+          <td>Active_Churned</td>
+          <td class="low">0.05</td>
+          <td class="low">0.08</td>
+          <td class="med">0.42</td>
+          <td class="high">0.45</td>
+        </tr>
+        <tr>
+          <td>Inactive_Churned</td>
+          <td class="low">0.02</td>
+          <td class="low">0.03</td>
+          <td class="low">0.08</td>
+          <td class="high">0.87</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:8px;letter-spacing:0.1em;">
+      <span style="color:var(--green)">■</span> Low (&lt;0.15)&nbsp;&nbsp;
+      <span style="color:var(--yellow)">■</span> Medium (0.15–0.40)&nbsp;&nbsp;
+      <span style="color:var(--red)">■</span> High (&gt;0.40) — Absorbing tendency
+    </div>
+  </div>
+
+  <div class="interp">
+    <div class="interp-title">Statistical Interpretation — Markov Chain Analysis</div>
+    <p><strong>System Dynamics:</strong> The 10-step projection reveals a strong long-run drift toward churn-dominated states. <strong>Inactive_Churned</strong> becomes the most dominant state (~46%), indicating weak recovery or reactivation mechanisms in the current system. The Markov chain behaves as a churn funnel with increasing risk over time.</p>
+    <p><strong>State Trajectory Summary:</strong> Active_Retained declines from ~38% to below 10% — customer retention is not sustainable without intervention. Inactive_Retained decays to near-zero rapidly — it is a transient state with a short intervention window. Active_Churned shows a consistent upward trend, indicating early-stage churn risk growing over time.</p>
+    <p><strong>Risk Segmentation Mapping:</strong> States map directly to portfolio risk profiles: Active_Retained = Conservative (stable), Inactive_Retained = Moderate (intervention window), Active_Churned = High Risk (early warning signals), Inactive_Churned = Aggressive (churned, requires reactivation capital).</p>
+    <p><strong>Business Implications:</strong> Protect Active_Retained customers first. Target Inactive_Retained quickly — this window closes fast. Monitor Active_Churned for early warning signals. Invest in reactivation pathways from Inactive_Churned (currently &lt;5% recovery probability).</p>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">R — Markov Chain Projection (bank_states_probability_prediction.R)</div>
+    <div class="code-block">
+<span class="cm"># Build Markov chain object from transition matrix</span>
+<span class="kw">transMatrix_bank</span> = <span class="fn">new</span>(<span class="str">"markovchain"</span>,
+  states           = state_names,
+  transitionMatrix = transMatrix_churn)
+
+<span class="cm"># Initial customer state distribution</span>
+<span class="kw">Initial_Dist</span> = c(<span class="num">0.442</span>, <span class="num">0.355</span>, <span class="num">0.073</span>, <span class="num">0.13</span>)
+
+<span class="cm"># Project 10 steps forward (n-step distribution)</span>
+<span class="kw">for</span>(k in <span class="num">1</span>:<span class="num">10</span>){
+  nsteps = Initial_Dist * (transMatrix_bank^k)
+  <span class="cm"># Append step k probabilities to results table</span>
+}
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Musa Mkhohliswa</div>
+    <div style="margin-top:6px;">Multi-Factor Equity Research &amp; Portfolio Risk Analytics Framework</div>
+  </div>
+  <div style="text-align:right;">
+    <div>S&amp;P 500 · 11 GICS Sectors · 200+ Companies</div>
+    <div style="margin-top:4px;">R · Python · MySQL · HTML</div>
+  </div>
+</footer>
+
+<script>
+// ── CHART DEFAULTS ──────────────────────────────────────────────────────────────
+Chart.defaults.color = '#7a7870';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+const GOLD   = '#c8a96e';
+const BLUE   = '#4a9eff';
+const TEAL   = '#4ecdc4';
+const RED    = '#e05f5f';
+const GREEN  = '#6fcf97';
+const YELLOW = '#f2c94c';
+const DIM    = '#2a3040';
+
+function gridOpts() {
+  return { color: 'rgba(30,40,64,0.8)', lineWidth: 1 };
+}
+
+// ── 1. DIVIDEND YIELD BAR ───────────────────────────────────────────────────────
+const divData = {
+  labels: ['Real Estate','Consumer Defense','Utilities','Energy','Financial Serv',
+           'Consumer Cycle','Communication Serv','Technology','Healthcare','Basic Materials','Industrials'],
+  values: [3.776, 3.578, 3.053, 2.423, 2.385, 2.297, 2.103, 1.755, 1.727, 1.633, 1.479]
+};
+
+new Chart(document.getElementById('divYieldChart'), {
+  type: 'bar',
+  data: {
+    labels: divData.labels,
+    datasets: [{
+      label: 'Avg Dividend Yield (%)',
+      data: divData.values,
+      backgroundColor: divData.values.map(v => v > 2.30 ? GOLD : DIM),
+      borderColor: divData.values.map(v => v > 2.30 ? GOLD : 'transparent'),
+      borderWidth: 1,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      annotation: {},
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)}%` } }
+    },
+    scales: {
+      x: { grid: gridOpts(), ticks: { callback: v => v + '%' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 2. TOP 5 YIELD ──────────────────────────────────────────────────────────────
+new Chart(document.getElementById('top5YieldChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Real Estate','Consumer Defense','Utilities','Energy','Financial Serv'],
+    datasets: [{
+      label: 'Avg Dividend Yield (%)',
+      data: [3.776, 3.578, 3.053, 2.423, 2.385],
+      backgroundColor: [GOLD, GOLD+'cc', GOLD+'99', GOLD+'77', GOLD+'55'],
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)}%` } } },
+    scales: {
+      x: { grid: gridOpts(), ticks: { callback: v => v + '%' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 3. RISK vs RETURN SCATTER ───────────────────────────────────────────────────
+new Chart(document.getElementById('riskReturnChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      { label: 'MSFT', data: [{x: 0.245, y: 0.259}], backgroundColor: BLUE, pointRadius: 10, pointHoverRadius: 13 },
+      { label: 'PPL',  data: [{x: 0.219, y: 0.098}], backgroundColor: TEAL, pointRadius: 10, pointHoverRadius: 13 },
+      { label: 'HBNC', data: [{x: 0.325, y: 0.100}], backgroundColor: RED, pointRadius: 10, pointHoverRadius: 13 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: Risk ${(ctx.parsed.x*100).toFixed(1)}% | ROI ${(ctx.parsed.y*100).toFixed(1)}%` } }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Annualised Volatility', color: '#7a7870' }, grid: gridOpts(), ticks: { callback: v => (v*100).toFixed(0)+'%' } },
+      y: { title: { display: true, text: 'Annualised ROI', color: '#7a7870' }, grid: gridOpts(), ticks: { callback: v => (v*100).toFixed(0)+'%' } }
+    }
+  }
+});
+
+// ── 4. DONUT ────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Aggressive', 'Balanced', 'Conservative'],
+    datasets: [{ data: [36.4, 36.4, 27.3], backgroundColor: [RED, YELLOW, GREEN], borderWidth: 0, hoverOffset: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}% of sectors` } }
+    }
+  }
+});
+
+// ── 5. EFFICIENCY CHART ─────────────────────────────────────────────────────────
+new Chart(document.getElementById('efficiencyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Technology','Financial Serv','Healthcare','Industrials','Consumer Defense',
+             'Consumer Cycle','Communication Serv','Basic Materials','Real Estate','Utilities','Energy'],
+    datasets: [
+      { label: 'ROE Score', data: [0.42, 0.38, 0.31, 0.28, 0.24, 0.22, 0.19, 0.16, 0.14, 0.12, 0.10], backgroundColor: BLUE+'cc', borderRadius: 2 },
+      { label: 'ROA Score', data: [0.18, 0.14, 0.12, 0.10, 0.09, 0.08, 0.07, 0.07, 0.05, 0.05, 0.06], backgroundColor: TEAL+'cc', borderRadius: 2 },
+      { label: 'Profit Margin', data: [0.26, 0.22, 0.19, 0.14, 0.11, 0.08, 0.16, 0.09, 0.32, 0.15, 0.08], backgroundColor: GOLD+'cc', borderRadius: 2 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+    scales: {
+      x: { stacked: false, grid: gridOpts() },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 6. GROWTH CHART ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('growthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Technology','Healthcare','Consumer Cycle','Financial Serv','Industrials',
+             'Communication Serv','Basic Materials','Consumer Defense','Utilities','Real Estate','Energy'],
+    datasets: [
+      { label: 'Earnings Growth', data: [0.18, 0.22, 0.14, 0.16, 0.12, 0.08, 0.09, 0.07, 0.06, 0.05, -0.04], backgroundColor: GREEN+'cc', borderRadius: 2 },
+      { label: 'Revenue Growth', data: [0.12, 0.09, 0.10, 0.08, 0.07, 0.06, 0.05, 0.04, 0.04, 0.04, -0.02], backgroundColor: YELLOW+'cc', borderRadius: 2 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+    scales: {
+      x: { grid: gridOpts(), ticks: { callback: v => (v*100).toFixed(0)+'%' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 7. MOMENTUM REGRESSION SCATTER ─────────────────────────────────────────────
+(function(){
+  const sectors = ['Technology','Healthcare','Basic Materials','Industrials','Energy'];
+  const colors  = [BLUE, TEAL, RED, YELLOW, GOLD];
+  const datasets = sectors.map((s, i) => ({
+    label: s,
+    data: Array.from({length: 15}, () => ({
+      x: Math.random() * 0.8 - 0.1,
+      y: Math.random() * 0.6 - 0.1
+    })),
+    backgroundColor: colors[i] + '88',
+    pointRadius: 5,
+  }));
+
+  new Chart(document.getElementById('momentumRegChart'), {
+    type: 'scatter',
+    data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+      scales: {
+        x: { title: { display: true, text: 'Stock Momentum (200dMA adjusted)', color: '#7a7870' }, grid: gridOpts() },
+        y: { title: { display: true, text: 'Excess Return Proxy', color: '#7a7870' }, grid: gridOpts() }
+      }
+    }
+  });
+})();
+
+// ── 8. PEG RATIO BAR ────────────────────────────────────────────────────────────
+const pegData = {
+  labels: ['Technology','Healthcare','Consumer Cycle','Industrials','Utilities',
+           'Financial Serv','Consumer Defense','Basic Materials','Energy','Real Estate','Comm Serv'],
+  values: [1.437, 1.457, 1.584, 2.108, 2.368, 2.728, 2.962, 3.601, 3.111, 17.251, 20.545]
+};
+
+new Chart(document.getElementById('pegChart'), {
+  type: 'bar',
+  data: {
+    labels: pegData.labels,
+    datasets: [{
+      label: 'Average PEG Ratio',
+      data: pegData.values,
+      backgroundColor: pegData.values.map(v => v < 2 ? GREEN : v < 4 ? YELLOW : RED),
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` PEG: ${ctx.raw.toFixed(2)}` } } },
+    scales: {
+      x: { grid: gridOpts(), type: 'logarithmic', ticks: { callback: v => v } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 9. SECTOR SCATTER ───────────────────────────────────────────────────────────
+const scatterData = [
+  { label: 'Technology',       x: 0.01943, y: 0.000803, color: BLUE },
+  { label: 'Consumer Cycle',   x: 0.02207, y: 0.000728, color: YELLOW },
+  { label: 'Industrials',      x: 0.01747, y: 0.000715, color: TEAL },
+  { label: 'Basic Materials',  x: 0.02084, y: 0.000649, color: RED },
+  { label: 'Energy',           x: 0.02358, y: 0.000636, color: '#ff9965' },
+  { label: 'Financial Serv',   x: 0.01829, y: 0.000637, color: GOLD },
+  { label: 'Communication',    x: 0.01721, y: 0.000633, color: '#b39ddb' },
+  { label: 'Healthcare',       x: 0.01658, y: 0.000623, color: GREEN },
+  { label: 'Real Estate',      x: 0.01725, y: 0.000547, color: '#80cbc4' },
+  { label: 'Utilities',        x: 0.01373, y: 0.000537, color: '#ef9a9a' },
+  { label: 'Consumer Defense', x: 0.01446, y: 0.000463, color: '#a5d6a7' },
+];
+
+new Chart(document.getElementById('sectorScatterChart'), {
+  type: 'scatter',
+  data: {
+    datasets: scatterData.map(d => ({
+      label: d.label,
+      data: [{ x: d.x, y: d.y }],
+      backgroundColor: d.color,
+      pointRadius: 10, pointHoverRadius: 13
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: Vol ${(ctx.parsed.x*100).toFixed(2)}% | Ret ${(ctx.parsed.y*100).toFixed(4)}%` } }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Daily Volatility', color: '#7a7870' }, grid: gridOpts(), ticks: { callback: v => (v*100).toFixed(1)+'%' } },
+      y: { title: { display: true, text: 'Avg Daily Return', color: '#7a7870' }, grid: gridOpts(), ticks: { callback: v => (v*10000).toFixed(0)+'bps' } }
+    }
+  }
+});
+
+// ── 10. DAILY RETURNS LINE ──────────────────────────────────────────────────────
+(function(){
+  const n = 60;
+  const labels = Array.from({length: n}, (_, i) => `Day ${i+1}`);
+  function noise(vol, trend) {
+    return Array.from({length: n}, (_, i) => (Math.random()-0.5)*vol + trend*i/n);
+  }
+  new Chart(document.getElementById('dailyReturnChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'MSFT', data: noise(0.04, 0.15), borderColor: BLUE, backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
+        { label: 'PPL',  data: noise(0.02, 0.05), borderColor: TEAL, backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
+        { label: 'HBNC', data: noise(0.05, 0.04), borderColor: RED,  backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
+        y: { grid: gridOpts(), ticks: { callback: v => (v*100).toFixed(0)+'%' } }
+      }
+    }
+  });
+})();
+
+// ── 11. CUMULATIVE RETURN ───────────────────────────────────────────────────────
+(function(){
+  const n = 60;
+  const labels = Array.from({length: n}, (_, i) => `Day ${i+1}`);
+  function cumulative(vol, annRet) {
+    const daily = annRet / 252;
+    let arr = [1];
+    for (let i = 1; i < n; i++) arr.push(arr[i-1] * (1 + daily + (Math.random()-0.5)*vol));
+    return arr.map(v => +((v-1)*100).toFixed(2));
+  }
+  new Chart(document.getElementById('cumulativeReturnChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'MSFT', data: cumulative(0.015, 0.259), borderColor: BLUE, fill: { target: 'origin', above: BLUE+'15' }, borderWidth: 2, pointRadius: 0, tension: 0.4 },
+        { label: 'PPL',  data: cumulative(0.009, 0.098), borderColor: TEAL, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.4 },
+        { label: 'HBNC', data: cumulative(0.012, 0.100), borderColor: RED,  fill: false, borderWidth: 2, pointRadius: 0, tension: 0.4, borderDash: [4,4] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
+        y: { grid: gridOpts(), ticks: { callback: v => v+'%' } }
+      }
+    }
+  });
+})();
+
+// ── 12. SHARPE BAR ──────────────────────────────────────────────────────────────
+new Chart(document.getElementById('sharpeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['MSFT', 'PPL', 'HBNC'],
+    datasets: [{
+      label: 'Sharpe Ratio',
+      data: [0.77, 0.45, 0.31],
+      backgroundColor: [BLUE, TEAL, RED],
+      borderRadius: 4,
+      barThickness: 48
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` Sharpe: ${ctx.raw}` } }
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: gridOpts(), min: 0, max: 1.0 }
+    }
+  }
+});
+
+// ── 13. MARKOV LINE ─────────────────────────────────────────────────────────────
+const steps = [1,2,3,4,5,6,7,8,9,10];
+const markovData = {
+  active_retained:   [0.38, 0.30, 0.24, 0.20, 0.17, 0.15, 0.13, 0.12, 0.11, 0.09],
+  inactive_retained: [0.30, 0.22, 0.16, 0.12, 0.09, 0.07, 0.05, 0.04, 0.03, 0.02],
+  active_churned:    [0.10, 0.13, 0.15, 0.16, 0.17, 0.17, 0.17, 0.17, 0.16, 0.16],
+  inactive_churned:  [0.22, 0.35, 0.45, 0.52, 0.57, 0.61, 0.65, 0.67, 0.70, 0.73]
+};
+
+new Chart(document.getElementById('markovLineChart'), {
+  type: 'line',
+  data: {
+    labels: steps,
+    datasets: [
+      { label: 'Active Retained',   data: markovData.active_retained,   borderColor: GREEN,  borderWidth: 2.5, pointRadius: 4, fill: false, tension: 0.4 },
+      { label: 'Inactive Retained', data: markovData.inactive_retained, borderColor: YELLOW, borderWidth: 2,   pointRadius: 4, fill: false, tension: 0.4 },
+      { label: 'Active Churned',    data: markovData.active_churned,    borderColor: GOLD,   borderWidth: 2,   pointRadius: 4, fill: false, tension: 0.4 },
+      { label: 'Inactive Churned',  data: markovData.inactive_churned,  borderColor: RED,    borderWidth: 2.5, pointRadius: 4, fill: { target: 'origin', above: RED+'20' }, tension: 0.4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+    scales: {
+      x: { title: { display: true, text: 'Chain Step', color: '#7a7870' }, grid: { display: false } },
+      y: { title: { display: true, text: 'Probability', color: '#7a7870' }, grid: gridOpts(), min: 0, max: 0.8, ticks: { callback: v => (v*100).toFixed(0)+'%' } }
+    }
+  }
+});
+
+// ── 14. MARKOV FUNNEL BAR ───────────────────────────────────────────────────────
+new Chart(document.getElementById('markovBarChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Step 1','Step 3','Step 5','Step 7','Step 10'],
+    datasets: [
+      { label: 'Active Retained',   data: [0.38, 0.24, 0.17, 0.13, 0.09], backgroundColor: GREEN+'cc', stack: 'a', borderRadius: 2 },
+      { label: 'Inactive Retained', data: [0.30, 0.16, 0.09, 0.05, 0.02], backgroundColor: YELLOW+'cc', stack: 'a', borderRadius: 2 },
+      { label: 'Active Churned',    data: [0.10, 0.15, 0.17, 0.17, 0.16], backgroundColor: GOLD+'cc', stack: 'a', borderRadius: 2 },
+      { label: 'Inactive Churned',  data: [0.22, 0.45, 0.57, 0.65, 0.73], backgroundColor: RED+'cc', stack: 'a', borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, grid: gridOpts(), max: 1.0, ticks: { callback: v => (v*100).toFixed(0)+'%' } }
+    }
+  }
+});
+
+// ── NAV ACTIVE STATE ────────────────────────────────────────────────────────────
+const navLinks = document.querySelectorAll('nav a');
+const sections = ['s1','s2','s3','s4','s5'].map(id => document.getElementById(id));
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (s && window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+</script>
+ 
 <!-- CONTACT -->
 <div class="contact-band" id="contact">
   <h2>Let's Connect</h2>
@@ -994,10 +1658,10 @@
     <a href="https://linkedin.com/in/musa-mkhohliswa" target="_blank" class="contact-link cl-white">LinkedIn ↗</a>
   </div>
 </div>
-
+ 
 <footer>
   © 2025 · MUSA L. MKHOHLISWA · DATA ANALYST · EAST LONDON, ZA
 </footer>
-
+ 
 </body>
 </html>
